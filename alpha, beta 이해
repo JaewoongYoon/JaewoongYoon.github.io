@@ -1,0 +1,44 @@
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# plot 작성
+x = np.linspace(-3.5, 6, 101)        # x 정의
+y1 = stats.norm(0, 1).pdf(x)        
+y2 = stats.norm(2.5, 1).pdf(x)  
+
+alpha = .05                          # 유의수준
+
+# 유의수준일 때의 x
+criticalValue = stats.norm(0, 1).ppf(1 - alpha)
+
+# plot 작성
+plt.figure(figsize=(10, 6))          # 플롯 사이즈 지정
+
+plt.plot(x, y1, color='blue')        # H0 선을 파랑색으로 지정하여 plot 작성
+plt.plot(x, y2, color='red')         # H1 선을 빨강색으로 지정하여 plot 작성
+
+plt.axhline(0, color='black')        # x축을 수평선으로 표시
+
+# H0 유의수준에 파란색 점선으로 수직선 표시
+plt.axvline(criticalValue, linestyle='--', color='blue', alpha=.7)
+
+# 융의수준을 기준으로 하늘색과 핑크색으로 면적 칠하기
+plt.fill_between(x, 0, y1, where=(x >= criticalValue), facecolor='skyblue', alpha=.8,)
+plt.fill_between(x, 0, y2, where=(x <= criticalValue), facecolor='pink', alpha=.8,)
+
+# 면적에 대하여 텍스트 표시
+plt.text(0, .35, r'$H_0$', fontsize=12, horizontalalignment='center')
+plt.text(2.5, .35, r'$H_1$', fontsize=12, horizontalalignment='center')
+plt.text(2, .02, r'$\alpha$', fontsize=12, horizontalalignment='center')
+plt.text(1, .02, r'$\beta$', fontsize=12, horizontalalignment='center')
+plt.text(0, .2, r'$1-\alpha$', fontsize=12, horizontalalignment='center')
+plt.text(2.5, .2, r'$1-\beta$', fontsize=12, horizontalalignment='center')
+
+plt.xlabel("x")                      # x축 레이블 지정
+plt.ylabel("y")                      # y축 레이블 지정
+plt.grid()                           # 플롯에 격자 보이기
+plt.title(r'$\alpha$ Error and $\beta$ Error')     # 타이틀 표시
+plt.show()                           # 플롯 보이기
+[출처] [파이썬 데이터 사이언스] 제1종 오류(α error), 제2종 오류(β error)|작성자 친절한 박선생
